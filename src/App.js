@@ -6,9 +6,9 @@ class App extends Component {
 
     state = {
         cars: [
-            {name: 'Ford', year: 2018},
-            {name: 'Audi', year: 2016},
-            {name: 'Mazda', year: 2010}
+            {name: 'BMW M3', price: 43000},
+            {name: 'Audi Q8', price: 87000},
+            {name: 'Mercedes AMG GT', price: 145000}
         ],
         pageTitle: 'React components'
     }
@@ -16,7 +16,20 @@ class App extends Component {
     changeTitleHandler = () => {
 
         const oldTitle = this.state.pageTitle
-        const newTitle = oldTitle + ' (changed)'
+        const clickCar = this.state.cars[0].price
+        const newTitle = oldTitle + ' ' + clickCar
+
+        this.setState({
+            pageTitle: newTitle
+        })
+
+    }
+
+    changePriceHandler = () => {
+
+        const oldTitle = this.state.pageTitle
+        const clickCar = this.state.cars[0].price
+        const newTitle = oldTitle + ' ' + clickCar
 
         this.setState({
             pageTitle: newTitle
@@ -38,9 +51,12 @@ class App extends Component {
 
                 <button onClick={this.changeTitleHandler}>Change title</button>
 
-                <Car name={cars[0].name} year={cars[0].year} />
-                <Car name={cars[1].name} year={cars[1].year} />
-                <Car name={cars[2].name} year={cars[2].year} />
+                <Car name={cars[0].name} price={cars[0].price} />
+                    <button onClick={this.changePriceHandler}>add price</button>
+                <Car name={cars[1].name} price={cars[1].price} />
+                    <button onClick={this.changePriceHandler}>add price</button>
+                <Car name={cars[2].name} price={cars[2].price} />
+                    <button onClick={this.changePriceHandler}>add price</button>
             </div>
         );
     }
