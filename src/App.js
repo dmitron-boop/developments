@@ -10,53 +10,63 @@ class App extends Component {
             {name: 'Audi Q8', price: 87000},
             {name: 'Mercedes AMG GT', price: 145000}
         ],
-        pageTitle: 'React components'
+        pageTitle: 'React components',
+        showCars: false
     }
 
-    changeTitleHandler = () => {
-
-        const oldTitle = this.state.pageTitle
-        const clickCar = this.state.cars[0].price
-        const newTitle = oldTitle + ' ' + clickCar
-
-        this.setState({
-            pageTitle: newTitle
-        })
-
+    onChangePrice(price, index) {
+        const car = this.state.cars[index]
+        car.price = price
+        const cars = [...this.state.cars]
+        cars[index] = car
+        this.setState({cars})
     }
 
-    changePriceHandler = () => {
+    deleteHandler(index) {
+        const cars = this.state.cars.concat()
 
-        const oldTitle = this.state.pageTitle
-        const clickCar = this.state.cars[0].price
-        const newTitle = oldTitle + ' ' + clickCar
+        cars.splice(index, 1)
+        this.setState({cars})
+    }
 
+    toggleCarsHandler = (newTitle) => {
         this.setState({
-            pageTitle: newTitle
+            showCars: !this.state.showCars
         })
-
     }
 
     render() {
-        console.log('Render')
         const divStyle = {
             textAlign: 'center'
         }
 
-        const cars = this.state.cars
+        let cars = null
+
+        if (this.state.showCars) {
+            cars = this.state.cars.map((car, index) => {
+                return (
+                    <Car
+                        key={index}
+                        name={car.name}
+                        price={car.price}
+                        onDelete={this.deleteHandler.bind(this, index)}
+                        onChangePrice={event => this.onChangePrice(event.target.value, index)} />
+                )
+            })
+        }
 
         return (
             <div style={divStyle}>
                 <h1>{this.state.pageTitle}</h1>
 
-                <button onClick={this.changeTitleHandler}>Change title</button>
-
-                <Car name={cars[0].name} price={cars[0].price} />
-                    <button onClick={this.changePriceHandler}>add price</button>
-                <Car name={cars[1].name} price={cars[1].price} />
-                    <button onClick={this.changePriceHandler}>add price</button>
-                <Car name={cars[2].name} price={cars[2].price} />
-                    <button onClick={this.changePriceHandler}>add price</button>
+                <button onClick={this.toggleCarsHandler}>Toggle cars</button>
+                <div style={{
+                    width: 400,
+                    margin: 'auto',
+                    paddingTop: '20px',
+                }}>
+                { cars }
+                </div>
             </div>
         );
     }
